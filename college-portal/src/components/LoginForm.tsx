@@ -17,7 +17,7 @@ export function LoginForm({ redirectTo }: { redirectTo: string }) {
   }
 
   return (
-    <form onSubmit={login}>
+    <form className="login-form" onSubmit={login}>
       <p><label>Учебный PIN <input name="pin" required maxLength={32} pattern=".*\S.*" /></label></p>
       <button type="submit">Войти в кабинет</button>
     </form>

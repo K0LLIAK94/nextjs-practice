@@ -9,11 +9,11 @@ export default function PortalLayout({ children }: Readonly<{ children: React.Re
       <aside className="portal-sidebar">
         <p><Link href="/">Campus College</Link></p>
         <PortalNav />
-        <p>Алексей Смирнов<br />Студент · ИТ-21</p>
+        <p className="student-info">Алексей Смирнов<br />Студент · ИТ-21</p>
         <LogoutButton />
       </aside>
-      <div>
-        <header><Link href="/">На сайт колледжа</Link> · Личный кабинет</header>
+      <div className="portal-content">
+        <header className="portal-topbar"><Link href="/">На сайт колледжа</Link> · Личный кабинет</header>
         <main>{children}</main>
       </div>
     </div>

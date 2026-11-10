@@ -18,7 +18,7 @@ export function CourseFilter() {
   }
 
   return (
-    <label>
+    <label className="course-filter">
       Тип курса{' '}
       <select value={type} onChange={(event) => updateFilter(event.target.value)}>
         <option value="all">Все</option>

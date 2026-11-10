@@ -16,7 +16,16 @@ export function PortalNav() {
     <nav className="sidebar-nav" aria-label="Навигация личного кабинета">
       {links.map(({ href, label }) => {
         const active = pathname === href || pathname.startsWith(`${href}/`);
-        return <Link key={href} href={href} aria-current={active ? 'page' : undefined}>{label}</Link>;
+        return (
+          <Link
+            key={href}
+            href={href}
+            aria-current={active ? 'page' : undefined}
+            style={{ fontWeight: active ? 'bold' : 'normal' }}
+          >
+            {label}
+          </Link>
+        );
       })}
     </nav>
   );
