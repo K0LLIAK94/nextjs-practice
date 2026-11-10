@@ -1,21 +1,35 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { courses, getCourseTypeLabel } from '@/data/courses';
-export const metadata: Metadata = { title: 'Курсы' };
+import { CourseFilter } from '@/components/CourseFilter';
+import { getCourseFilter } from '@/lib/course-filter';
 
-export default function CoursesPage() {
+export const metadata: Metadata = { title: 'Курсы' };
+type CoursesPageProps = {
+  searchParams: Promise<{ type?: string | string[] }>;
+};
+
+export default async function CoursesPage({ searchParams }: CoursesPageProps) {
+  const type = getCourseFilter((await searchParams).type);
+  const filtered = courses.filter((course) => type === 'all' || course.type === type);
+
   return (
-    <section className="container content-section">
-      <p className="section-kicker">ОБРАЗОВАТЕЛЬНЫЕ ПРОГРАММЫ / 02</p>
-      <h1 className="page-heading">Выбери свой <em>следующий шаг.</em></h1>
-      <p className="lead narrower">Три курса: теоретические основы и практические занятия. Каждый курс имеет собственный динамический URL.</p>
-      <div className="catalog-list">{courses.map((course, index) => (
-        <Link href={`/courses/${course.id}`} key={course.id} className="catalog-row">
-          <span className="catalog-number">0{index + 1}</span>
-          <span className="catalog-info"><strong>{course.title}</strong><small>{course.description}</small></span>
-          <span className="type-tag">{getCourseTypeLabel(course.type)}</span><span className="round-arrow" aria-hidden="true">↗</span>
-        </Link>
-      ))}</div>
+    <section>
+      <h1>Курсы</h1>
+      <Suspense fallback={<p>Загрузка фильтра…</p>}>
+        <CourseFilter />
+      </Suspense>
+      <p>Найдено курсов: {filtered.length}</p>
+      <ul className="course-list">
+        {filtered.map((course) => (
+          <li key={course.id}>
+            <h2><Link href={`/courses/${course.id}`}>{course.title}</Link></h2>
+            <p>{getCourseTypeLabel(course.type)} · {course.duration}</p>
+            <p>{course.description}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

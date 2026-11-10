@@ -1,14 +1,20 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-export const metadata: Metadata = { title: 'Демо-доступ' };
+import { LoginForm } from '@/components/LoginForm';
+import { getPortalRedirect } from '@/lib/portal-redirect';
 
-export default function LoginPage() {
+export const metadata: Metadata = { title: 'Вход в кабинет' };
+
+export default async function LoginPage({ searchParams }: {
+  searchParams: Promise<{ redirect?: string | string[] }>;
+}) {
+  const { redirect } = await searchParams;
+  const redirectTo = getPortalRedirect(Array.isArray(redirect) ? redirect[0] : redirect);
+
   return (
-    <section className="container content-section login-section">
-      <p className="section-kicker">ЛИЧНЫЙ КАБИНЕТ</p>
-      <h1 className="page-heading">Вход в <em>Campus.</em></h1>
-      <p className="lead narrower">Это учебный демонстрационный проект. Авторизация не реализована; личный кабинет открыт для просмотра без пароля.</p>
-      <Link href="/portal/dashboard" className="button button-primary">Открыть демо-кабинет ↗</Link>
+    <section>
+      <h1>Вход в личный кабинет</h1>
+      <p>Для учебного доступа введите любой непустой PIN. Это демонстрация работы cookie.</p>
+      <LoginForm redirectTo={redirectTo} />
     </section>
   );
 }
